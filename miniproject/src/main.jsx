@@ -15,6 +15,7 @@ window.addEventListener('error', (event) => {
   console.error('Error details:', {
     message: event.message,
     filename: event.filename,
+    
     lineno: event.lineno,
     colno: event.colno,
     error: event.error

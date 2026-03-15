@@ -1,0 +1,55 @@
+# Environment variables
+.env
+.env.local
+.env.*.local
+# IMPORTANT: Never commit .env file with real API keys!
+
+# Media files
+media/
+*.jpg
+*.png
+*.jpeg
+*.ogg
+*.mp3
+*.wav
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+logs/
+
+# OS
+.DS_Store
+Thumbs.db
+

@@ -1,10 +1,13 @@
-import { Search, Globe, User, Menu, X, Languages } from 'lucide-react'
+import { Search, Globe, User, Menu, X, Languages, LogOut } from 'lucide-react'
 import { useState } from 'react'
 import { useLanguage } from '../context/LanguageContext'
+import { useAuth } from '../context/AuthContext'
 
 const Header = () => {
   const { language, toggleLanguage, t } = useLanguage()
+  const { user, logout } = useAuth()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isProfileOpen, setIsProfileOpen] = useState(false)
 
   return (
     <header className="bg-forest-green text-white shadow-lg sticky top-0 z-50">
@@ -42,10 +45,42 @@ const Header = () => {
               <Languages className="w-4 h-4" />
               <span>{language === 'en' ? 'EN' : 'TA'}</span>
             </button>
-            <button className="flex items-center space-x-1 px-3 py-1 rounded-full bg-white/10 hover:bg-white/20 transition-colors">
-              <User className="w-4 h-4" />
-              <span className="hidden lg:inline">{t('profile')}</span>
-            </button>
+            
+            {user ? (
+              <div className="relative">
+                <button
+                  onClick={() => setIsProfileOpen(!isProfileOpen)}
+                  className="flex items-center space-x-1 px-3 py-1 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
+                >
+                  <User className="w-4 h-4" />
+                  <span className="hidden lg:inline truncate max-w-[150px]">{user.name}</span>
+                </button>
+                
+                {isProfileOpen && (
+                  <div className="absolute right-0 mt-2 w-48 bg-white text-gray-800 rounded-lg shadow-lg py-2 z-50">
+                    <div className="px-4 py-2 border-b border-gray-200">
+                      <p className="font-semibold">{user.name}</p>
+                      <p className="text-sm text-gray-600">{user.email}</p>
+                    </div>
+                    <button
+                      onClick={() => {
+                        logout()
+                        setIsProfileOpen(false)
+                      }}
+                      className="flex items-center space-x-2 w-full px-4 py-2 hover:bg-gray-100 transition-colors text-red-600"
+                    >
+                      <LogOut className="w-4 h-4" />
+                      <span>Logout</span>
+                    </button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <button className="flex items-center space-x-1 px-3 py-1 rounded-full bg-white/10 hover:bg-white/20 transition-colors">
+                <User className="w-4 h-4" />
+                <span className="hidden lg:inline">{t('profile')}</span>
+              </button>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -79,10 +114,30 @@ const Header = () => {
               <Languages className="w-4 h-4" />
               <span>{t('language')}: {language === 'en' ? 'EN' : 'TA'}</span>
             </button>
-            <button className="flex items-center space-x-2 w-full px-3 py-2 rounded-lg bg-white/10 hover:bg-white/20 transition-colors">
-              <User className="w-4 h-4" />
-              <span>{t('profile')}</span>
-            </button>
+            
+            {user ? (
+              <>
+                <div className="px-3 py-2 rounded-lg bg-white/10">
+                  <p className="font-semibold text-sm">{user.name}</p>
+                  <p className="text-xs text-gray-300">{user.email}</p>
+                </div>
+                <button
+                  onClick={() => {
+                    logout()
+                    setIsMenuOpen(false)
+                  }}
+                  className="flex items-center space-x-2 w-full px-3 py-2 rounded-lg bg-red-500/20 hover:bg-red-500/30 transition-colors text-red-200"
+                >
+                  <LogOut className="w-4 h-4" />
+                  <span>Logout</span>
+                </button>
+              </>
+            ) : (
+              <button className="flex items-center space-x-2 w-full px-3 py-2 rounded-lg bg-white/10 hover:bg-white/20 transition-colors">
+                <User className="w-4 h-4" />
+                <span>{t('profile')}</span>
+              </button>
+            )}
           </div>
         )}
       </div>
